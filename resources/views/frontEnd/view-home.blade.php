@@ -675,13 +675,20 @@
 
 @push('js')
 <script>
-    $('.filtr-container').filterizr();
-    
-    $('#filtrnav li').on('click', function() {
-        $('.filtr').removeClass('filtr-active');
-        $(this).addClass('filtr-active');
-        var filter = $(this).data('fltr');
-        filtrnav.filterizr('filter', filter);
+    $(document).ready(function () {
+        var $filterContainer = $('.filtr-container');
+
+        if ($filterContainer.length && $filterContainer.find('.filtr-item').length) {
+            $filterContainer.filterizr();
+
+            $('#filtrnav li').on('click', function () {
+                $('#filtrnav li').removeClass('filtr-active');
+                $(this).addClass('filtr-active');
+
+                var filter = $(this).data('filter');
+                $filterContainer.filterizr('filter', filter);
+            });
+        }
     });
 </script>
 
@@ -720,18 +727,19 @@
                             icon: 'success',
                             showConfirmButton: false,
                             timer: 2500
-                        })
+                        });
 
                         Msg.fire({
                           type: 'success',
                           title: data.success_message,
-                        })
-                        
+                        });
                     }
                     else 
                     {
                         $(form)[0].reset();
-                        grecaptcha.reset();
+                        if (typeof grecaptcha !== 'undefined') {
+                            grecaptcha.reset();
+                        }
 
                         let Msg = Swal.mixin({
                             toast: true,
@@ -739,12 +747,12 @@
                             icon: 'error',
                             showConfirmButton: false,
                             timer: 2500
-                        })
+                        });
 
                         Msg.fire({
                           type: 'error',
                           title: data.success_message,
-                        })
+                        });
                     }
                 }
             });

@@ -201,9 +201,21 @@
 	
 
 	// Counter
-	$('.counter').counterUp({
+	/*$('.counter').counterUp({
 		delay: 10,
 		time: 1000
-	});
-
+	});*/
+	// Counter
+$(window).on('load', function () {
+	if (typeof $.fn.counterUp !== 'undefined' && $('.counter').length > 0) {
+		try {
+			$('.counter').counterUp({
+				delay: 10,
+				time: 1000
+			});
+		} catch (e) {
+			console.log('CounterUp error:', e);
+		}
+	}
+});
 })(jQuery);

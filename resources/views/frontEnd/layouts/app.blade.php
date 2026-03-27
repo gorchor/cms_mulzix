@@ -210,8 +210,8 @@
     <script src="{{ asset('frontEnd/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('frontEnd/js/jquery.meanmenu.js') }}"></script>
     <script src="{{ asset('frontEnd/js/jquery.filterizr.min.js') }}"></script>
-    <script src="{{ asset('frontEnd/js/jquery.counterup.min.js') }}"></script>
     <script src="{{ asset('frontEnd/js/waypoints.min.js') }}"></script>
+    <script src="{{ asset('frontEnd/js/jquery.counterup.min.js') }}"></script>
     <script src="{{ asset('frontEnd/js/viewportchecker.js') }}"></script>
     <script src="{{ asset('frontEnd/js/sweetalert2.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
