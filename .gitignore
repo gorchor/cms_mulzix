@@ -1,20 +1,43 @@
-/.phpunit.cache
+# Laravel
+/vendor
 /node_modules
 /public/build
 /public/hot
-/public/storage
 /storage/*.key
-/vendor
+
+# Env files
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
+.env.*
+!.env.example
+
+# Logs
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Cache
+/bootstrap/cache/*.php
+
+# IDE
 /.idea
 /.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker (opcional logs/temp)
+docker/mysql/data
+docker/mysql/logs
+
+# Composer
+composer.lock
+
+# NPM
+package-lock.json
+
+# Testing
+/phpunit.xml
