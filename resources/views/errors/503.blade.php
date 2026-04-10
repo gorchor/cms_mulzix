@@ -18,7 +18,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             height: 100vh;
-            background: url('{{ asset("public/upload/slider_1774649154.webp") }}') no-repeat center center/cover;
+            background: url('{{ asset("upload/slider_1774649154.webp") }}') no-repeat center center/cover;
             position: relative;
             color: #fff;
         }
