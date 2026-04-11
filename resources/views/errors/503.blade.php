@@ -15,7 +15,7 @@
         body {
             height: 100vh;
             width: 100vw;
-            background: url('{{ asset("upload/unde_construction.jpeg") }}') no-repeat center center;
+            background: url('{{ asset("upload/background.png") }}') no-repeat center center;
             background-size: cover;
         }
     </style>
