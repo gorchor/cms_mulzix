@@ -64,9 +64,9 @@ use App\Http\Controllers\BackEnd\WhyChooseController as WhyChooseControllerForBa
 use App\Http\Controllers\BackEnd\FaqController as FaqControllerForBackEnd;
 use App\Http\Controllers\BackEnd\SocialMediaController as SocialMediaControllerForBackEnd; 
 use App\Http\Controllers\BackEnd\FileController as FileControllerForBackEnd;
+use App\Http\Controllers\FrontEnd\CoffeeMarketController;
 
-
-
+Route::get('/coffee-market-price', [CoffeeMarketController::class, 'price']);
 Route::get('/', [HomeController::class,'index'])->name('home.page');
 Route::get('/home/page/{slug}', [HomeController::class,'dynamicPage'])->name('home.dynamic.page');
 Route::post('/home/send-email', [HomeController::class,'sendEmail'])->name('home.send.email');

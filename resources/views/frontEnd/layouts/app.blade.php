@@ -477,16 +477,20 @@
             color: #666;
         }
 
+
+       
+
+        
         .header-info {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 18px;
-    flex-wrap: nowrap; /* 🔥 CLAVE */
+    flex-wrap: nowrap;
 }
 
 .header-info ul.first {
-    margin-bottom: 0;
+    margin: 0;
     padding-left: 0;
     display: flex;
     align-items: center;
@@ -497,6 +501,7 @@
     align-items: center;
     color: #fff;
     margin-right: 18px;
+    white-space: nowrap;
 }
 
 .header-info ul.first li:last-child {
@@ -510,48 +515,99 @@
 .header-coffee {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     color: #fff;
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
-    padding: 0 10px;
+    padding: 0 12px;
     border-left: 1px solid rgba(255,255,255,.25);
+    border-right: 1px solid rgba(255,255,255,.25);
+    line-height: 1;
+    min-height: 24px;
 }
 
-.header-coffee i {
+.header-coffee .coffee-icon {
     font-size: 13px;
     color: #fff;
 }
 
-.header-coffee .coffee-value {
+.header-coffee .coffee-label {
+    color: #fff;
+    font-weight: 600;
+}
+
+.header-coffee .coffee-price-wrap {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.header-coffee .coffee-price {
     color: #ffd54f;
+    font-size: 16px;
     font-weight: 700;
+    letter-spacing: .2px;
 }
 
 .header-coffee .coffee-unit {
+    color: #fff;
     font-size: 12px;
-    opacity: .9;
+    opacity: .95;
+    font-weight: 600;
+}
+
+.header-coffee .coffee-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    padding-left: 4px;
+}
+
+.header-coffee .coffee-change.up {
+    color: #7CFC9A;
+}
+
+.header-coffee .coffee-change.down {
+    color: #FFB3B3;
+}
+
+.header-coffee .coffee-change.neutral {
+    color: #F5F5F5;
 }
 
 @media (max-width: 1199px) {
-    .header-coffee {
-        font-size: 13px;
-        padding: 0 8px;
+    .header-info {
+        gap: 12px;
     }
 
     .header-info ul.first li {
         margin-right: 12px;
+        font-size: 13px;
+    }
+
+    .header-coffee {
+        font-size: 13px;
+        padding: 0 10px;
+        gap: 6px;
+    }
+
+    .header-coffee .coffee-price {
+        font-size: 15px;
     }
 }
 
 @media (max-width: 991px) {
     .header-info {
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .header-coffee {
         border-left: 0;
+        border-right: 0;
         padding: 0;
     }
 }
@@ -575,24 +631,19 @@
     .header-info ul.first li:last-child {
         margin-bottom: 0;
     }
-}
-.header-info ul.first {
-    display: flex;
-    align-items: center;
-    margin: 0;
-}
 
-.header-info ul.first li {
-    margin-right: 18px;
-}
+    .header-coffee {
+        font-size: 13px;
+    }
 
-.header-info ul.first li:last-child {
-    margin-right: 0;
-}
-       
+    .header-coffee .coffee-price {
+        font-size: 14px;
+    }
 
-        
-        }
+    .header-coffee .coffee-change {
+        font-size: 11px;
+    }
+}
     </style>
 
 </head>
@@ -604,7 +655,7 @@
     <div class="header-area">
         <div class="container">
             <div class="row">
-                <div class="col-xl-6 col-lg-5 col-12">
+                <div class="col-xl-7 col-lg-8 col-12">
                     <div class="header-social">
                         <ul>
                             <li>
@@ -625,7 +676,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-9 col-12">
+                <div class="col-xl-5 col-lg-4 col-12">
                     <div class="header-info">
                         <ul class="first">
                             <li>
@@ -638,12 +689,20 @@
                             </li>
                             
                         </ul>
-                         <div class="header-coffee" title="Valor referencial del café en bolsa">
-        <i class="fas fa-chart-line"></i>
-        <span class="coffee-label">Café:</span>
-        <span class="coffee-value" id="coffee-price">225.40</span>
+                         <div class="header-coffee" id="coffeeTicker" title="Valor referencial del café en bolsa">
+    <i class="fas fa-chart-line coffee-icon"></i>
+    <span class="coffee-label">Café NY:</span>
+
+    <span class="coffee-price-wrap">
+        <span class="coffee-price" id="coffee-price">0.00</span>
         <span class="coffee-unit">USD</span>
-    </div>
+    </span>
+
+    <span class="coffee-change neutral" id="coffee-change">
+        <i class="fas fa-minus"></i>
+        <span>0.00%</span>
+    </span>
+</div>
                         
                         @if($setting->language_status == 'Show')
                         <div class="lang-right">
@@ -1006,7 +1065,57 @@
             <script src="{{ asset('frontEnd/js/ltr.js') }}"></script>
         @endif
     @endif    
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const priceEl = document.getElementById('coffee-price');
+    const changeEl = document.getElementById('coffee-change');
 
+    function setTickerView(data) {
+        if (!priceEl || !changeEl) return;
+
+        const price = Number(data.price || 0).toFixed(2);
+        const changePercent = Number(data.change_percent || 0);
+
+        priceEl.textContent = price;
+
+        changeEl.classList.remove('up', 'down', 'neutral');
+
+        if (changePercent > 0) {
+            changeEl.classList.add('up');
+            changeEl.innerHTML = '<i class="fas fa-caret-up"></i><span>' + Math.abs(changePercent).toFixed(2) + '%</span>';
+        } else if (changePercent < 0) {
+            changeEl.classList.add('down');
+            changeEl.innerHTML = '<i class="fas fa-caret-down"></i><span>' + Math.abs(changePercent).toFixed(2) + '%</span>';
+        } else {
+            changeEl.classList.add('neutral');
+            changeEl.innerHTML = '<i class="fas fa-minus"></i><span>0.00%</span>';
+        }
+    }
+
+    async function loadCoffeeTicker() {
+        try {
+            const response = await fetch('/coffee-market-price', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error HTTP ' + response.status);
+            }
+
+            const data = await response.json();
+            setTickerView(data);
+        } catch (error) {
+            console.error('Error cargando ticker del café:', error);
+        }
+    }
+
+    loadCoffeeTicker();
+    setInterval(loadCoffeeTicker, 60000);
+});
+</script>
     <script>
     (function($){
         $(".form_subscriber_ajax").on('submit', function(e){

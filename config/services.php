@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'twelvedata' => [
+    'key' => env('TWELVE_DATA_API_KEY'),
+    'coffee_symbol' => env('TWELVE_DATA_COFFEE_SYMBOL', 'COFFEE'),
+    'interval' => env('TWELVE_DATA_INTERVAL', '1min'),
+    'base_url' => 'https://api.twelvedata.com',
+    ],
+
 ];
