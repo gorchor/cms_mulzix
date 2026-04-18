@@ -576,6 +576,19 @@
         margin-bottom: 0;
     }
 }
+.header-info ul.first {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.header-info ul.first li {
+    margin-right: 18px;
+}
+
+.header-info ul.first li:last-child {
+    margin-right: 0;
+}
        
 
         
@@ -612,7 +625,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-7 col-12">
+                <div class="col-xl-6 col-lg-9 col-12">
                     <div class="header-info">
                         <ul class="first">
                             <li>
