@@ -578,6 +578,14 @@
     color: #F5F5F5;
 }
 
+.header-info .header-coffee .coffee-change.down {
+    color: #FF3B3B;
+}
+
+.header-info .header-coffee .coffee-change.up {
+    color: #00e676;
+}
+
 @media (max-width: 1199px) {
     .header-info {
         gap: 12px;
@@ -643,6 +651,26 @@
     .header-coffee .coffee-change {
         font-size: 11px;
     }
+}
+.up {
+    color: #00e676;
+    font-weight: 600;
+}
+
+.down {
+    color: #ff5252;
+    font-weight: 600;
+}
+
+.neutral {
+    color: #ccc;
+}
+.coffee-up {
+    color: #00e676;
+}
+
+.coffee-down {
+    color: #ff3b3b;
 }
     </style>
 
@@ -1067,6 +1095,7 @@
     @endif    
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
     const priceEl = document.getElementById('coffee-price');
     const changeEl = document.getElementById('coffee-change');
 
@@ -1076,20 +1105,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const price = Number(data.price || 0).toFixed(2);
         const changePercent = Number(data.change_percent || 0);
 
+        // Precio
         priceEl.textContent = price;
 
+        // Reset clases
         changeEl.classList.remove('up', 'down', 'neutral');
 
+        let arrow = '';
+        let className = '';
+
         if (changePercent > 0) {
-            changeEl.classList.add('up');
-            changeEl.innerHTML = '<i class="fas fa-caret-up"></i><span>' + Math.abs(changePercent).toFixed(2) + '%</span>';
+            arrow = '▲';
+            className = 'up';
         } else if (changePercent < 0) {
-            changeEl.classList.add('down');
-            changeEl.innerHTML = '<i class="fas fa-caret-down"></i><span>' + Math.abs(changePercent).toFixed(2) + '%</span>';
+            arrow = '▼';
+            className = 'down';
         } else {
-            changeEl.classList.add('neutral');
-            changeEl.innerHTML = '<i class="fas fa-minus"></i><span>0.00%</span>';
+            arrow = '–';
+            className = 'neutral';
         }
+
+        changeEl.classList.add(className);
+
+        changeEl.innerHTML = `
+            ${arrow} ${Math.abs(changePercent).toFixed(2)}%
+        `;
     }
 
     async function loadCoffeeTicker() {
@@ -1106,14 +1146,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const data = await response.json();
+
             setTickerView(data);
+
         } catch (error) {
             console.error('Error cargando ticker del café:', error);
         }
     }
 
+    // Primera carga
     loadCoffeeTicker();
+
+    // Auto refresh cada 60s
     setInterval(loadCoffeeTicker, 60000);
+
 });
 </script>
     <script>
