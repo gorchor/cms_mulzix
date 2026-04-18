@@ -478,15 +478,107 @@
         }
 
         .header-info {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    flex-wrap: nowrap; /* 🔥 CLAVE */
+}
 
-        .header-info ul.first {
-            margin-bottom: 0;
+.header-info ul.first {
+    margin-bottom: 0;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+}
+
+.header-info ul.first li {
+    display: inline-flex;
+    align-items: center;
+    color: #fff;
+    margin-right: 18px;
+}
+
+.header-info ul.first li:last-child {
+    margin-right: 0;
+}
+
+.header-info ul.first li i {
+    margin-right: 8px;
+}
+
+.header-coffee {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 0 10px;
+    border-left: 1px solid rgba(255,255,255,.25);
+}
+
+.header-coffee i {
+    font-size: 13px;
+    color: #fff;
+}
+
+.header-coffee .coffee-value {
+    color: #ffd54f;
+    font-weight: 700;
+}
+
+.header-coffee .coffee-unit {
+    font-size: 12px;
+    opacity: .9;
+}
+
+@media (max-width: 1199px) {
+    .header-coffee {
+        font-size: 13px;
+        padding: 0 8px;
+    }
+
+    .header-info ul.first li {
+        margin-right: 12px;
+    }
+}
+
+@media (max-width: 991px) {
+    .header-info {
+        justify-content: center;
+    }
+
+    .header-coffee {
+        border-left: 0;
+        padding: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .header-info {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .header-info ul.first {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-info ul.first li {
+        margin-right: 0;
+        margin-bottom: 6px;
+    }
+
+    .header-info ul.first li:last-child {
+        margin-bottom: 0;
+    }
+}
+       
+
+        
         }
     </style>
 
@@ -531,9 +623,15 @@
                                 <i class="fa fa-phone"></i>
                                 <span>{{ $setting->top_bar_phone }}</span>
                             </li>
+                            
                         </ul>
-
-
+                         <div class="header-coffee" title="Valor referencial del café en bolsa">
+        <i class="fas fa-chart-line"></i>
+        <span class="coffee-label">Café:</span>
+        <span class="coffee-value" id="coffee-price">225.40</span>
+        <span class="coffee-unit">USD</span>
+    </div>
+                        
                         @if($setting->language_status == 'Show')
                         <div class="lang-right">
                             <form method="POST" action="{{ route('lang.change') }}" id="langForm">
